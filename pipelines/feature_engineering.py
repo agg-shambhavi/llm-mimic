@@ -3,7 +3,7 @@ from zenml import pipeline
 from steps.feature_eng import *
 
 
-@pipeline
+@pipeline(enable_cache=False)
 def feature_engineering(author_full_names: list[str], wait_for: str | list[str] | None = None) -> list[str]:
     raw_documents = query_data_warehouse(author_full_names, after=wait_for)
 

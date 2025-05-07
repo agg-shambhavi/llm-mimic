@@ -96,10 +96,12 @@ class EmbeddingModelSingleton(metaclass=SingletonMeta):
         """
 
         try:
+            logger.debug(f"Generating embeddings for {self._model=}")
+            logger.debug(f"Input text: {isinstance(input_text, (list, str))}")
             embeddings = self._model.encode(input_text)
-        except Exception:
+        except Exception as e:
+            logger.exception(f"Error generating embeddings for {e=}")
             logger.error(f"Error generating embeddings for {self._model_id=} and {input_text=}")
-
             return [] if to_list else np.array([])
 
         if to_list:

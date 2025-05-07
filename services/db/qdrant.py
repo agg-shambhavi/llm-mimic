@@ -23,6 +23,7 @@ class QdrantDatabaseConnector:
                         host=settings.QDRANT_DATABASE_HOST,
                         port=settings.QDRANT_DATABASE_PORT,
                     )
+                    logger.info(cls._instance.get_collections())
 
                     uri = f"{settings.QDRANT_DATABASE_HOST}:{settings.QDRANT_DATABASE_PORT}"
 

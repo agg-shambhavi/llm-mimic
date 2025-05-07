@@ -27,6 +27,7 @@ def query_data_warehouse(
         user_documents = [doc for query_result in results.values() for doc in query_result]
 
         documents.extend(user_documents)
+        logger.info(f"Found {len(user_documents)} documents for user: {author_full_name}")
 
     step_context = get_step_context()
     step_context.add_output_metadata(output_name="raw_documents", metadata=_get_metadata(documents))
