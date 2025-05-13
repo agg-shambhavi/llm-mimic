@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 sagemaker_user_credentials.json
+sagemaker_execution_role.json
 # C extensions
 *.so
 
