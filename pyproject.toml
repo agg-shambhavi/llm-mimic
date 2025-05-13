@@ -29,11 +29,16 @@ dependencies = [
   "langchain-community>=0.2.11",
   "fastapi>=0.100",
   "uvicorn>=0.30.6",
-  "opik>=0.2.2", 
+  "opik>=0.2.2",
   "accelerate>=0.33.0",
   "peft>=0.12.0",
   "trl>=0.9.6",
   "comet-ml>=3.44.3",
+  "s3fs>=2022.3.0",
+  "aws-profile-manager >=0.7.3",
+  "kubernetes>=30.1.0",
+  "sagemaker-huggingface-inference-toolkit >=2.4.0",
+  "sagemaker==2.232.2",
 ]
 [tool.setuptools]
 packages = ["llm_mimic", "steps", "configs", "services", "pipelines", "data_models", "run_scripts"]

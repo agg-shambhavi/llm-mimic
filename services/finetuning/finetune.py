@@ -40,6 +40,7 @@ def load_model(
         model_name=model_name,
         max_seq_length=max_seq_length,
         load_in_4bit=load_in_4bit,
+        fix_tokenizer=False
     )
 
     model = FastLanguageModel.get_peft_model(
@@ -75,7 +76,7 @@ def finetune(
     per_device_train_batch_size: int = 2,
     gradient_accumulation_steps: int = 8,
     beta: float = 0.5,  # Only for DPO
-    is_dummy: bool = True,
+    is_dummy: bool = False,
 ) -> tuple:
     model, tokenizer = load_model(
         model_name, max_seq_length, load_in_4bit, lora_rank, lora_alpha, lora_dropout, target_modules, chat_template
@@ -98,7 +99,7 @@ def finetune(
 
             return {"text": text}
 
-        dataset1 = load_dataset(f"{dataset_huggingface_workspace}/llm-mimic-instruct", split="train")
+        dataset1 = load_dataset(f"mlabonne/llmtwin", split="train")
         dataset2 = load_dataset("mlabonne/FineTome-Alpaca-100k", split="train[:10000]")
         dataset = concatenate_datasets([dataset1, dataset2])
         if is_dummy:
@@ -151,7 +152,7 @@ def finetune(
 
             return {"prompt": example["prompt"], "chosen": example["chosen"], "rejected": example["rejected"]}
 
-        dataset = load_dataset(f"{dataset_huggingface_workspace}/llm-mimic-preference", split="train")
+        dataset = load_dataset(f"mlabonne/llmtwin-dpo", split="train")
         if is_dummy:
             try:
                 dataset = dataset.select(range(400))
@@ -223,7 +224,7 @@ def save_model(model: Any, tokenizer: Any, output_dir: str, push_to_hub: bool = 
         model.push_to_hub_merged(repo_id, tokenizer, save_method="merged_16bit")
 
 
-def check_if_huggingface_model_exists(model_id: str, default_value: str = "mlabonne/TwinLlama-3.1-8B") -> str:
+def check_if_huggingface_model_exists(model_id: str, default_value: str = "agg-shambhavi/TwinLlama-3.1-8B") -> str:
     api = HfApi()
 
     try:
@@ -274,7 +275,7 @@ if __name__ == "__main__":
 
     if args.finetuning_type == "sft":
         print("Starting SFT training...")  # noqa
-        base_model_name = "meta-llama/Llama-3.1-8B"
+        base_model_name = "meta-llama/Meta-Llama-3.1-8B"
         print(f"Training from base model '{base_model_name}'")  # noqa
 
         output_dir_sft = Path(args.model_dir) / "output_sft"
@@ -311,5 +312,5 @@ if __name__ == "__main__":
         )
         inference(model, tokenizer)
 
-        dpo_output_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B-DPO"
+        dpo_output_model_repo_id = f"{args.model_output_huggingface_workspace}/MimicLlama-3.1-8B-DPO"
         save_model(model, tokenizer, "model_dpo", push_to_hub=True, repo_id=dpo_output_model_repo_id)

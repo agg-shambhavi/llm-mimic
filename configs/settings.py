@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     # Comet ML (during training)
     COMET_API_KEY: str | None = os.getenv("COMET_API_KEY")
-    COMET_PROJECT: str = "twin"
+    COMET_PROJECT: str = "llm-mimic"
 
     # --- Required settings when deploying the code. ---
     # --- Otherwise, default values values work fine. ---
@@ -37,15 +37,15 @@ class Settings(BaseSettings):
     QDRANT_APIKEY: str | None = None
 
     # AWS Authentication
-    AWS_REGION: str = "eu-central-1"
-    AWS_ACCESS_KEY: str | None = None
-    AWS_SECRET_KEY: str | None = None
-    AWS_ARN_ROLE: str | None = None
+    AWS_REGION: str = "us-east-2"
+    AWS_ACCESS_KEY: str | None = os.getenv("AWS_ACCESS_KEY")
+    AWS_SECRET_KEY: str | None = os.getenv("AWS_SECRET_KEY")
+    AWS_ARN_ROLE: str | None = os.getenv("AWS_ARN_ROLE")
 
     # --- Optional settings used to tweak the code. ---
 
     # AWS SageMaker
-    HF_MODEL_ID: str = "mlabonne/TwinLlama-3.1-8B-DPO"
+    HF_MODEL_ID: str = "agg-shambhavi/MimicLlama-3.1-8B-DPO"
     GPU_INSTANCE_TYPE: str = "ml.g5.2xlarge"
     SM_NUM_GPUS: int = 1
     MAX_INPUT_LENGTH: int = 2048
@@ -55,8 +55,8 @@ class Settings(BaseSettings):
     GPUS: int = 1  # Number of GPUs
     CPUS: int = 2  # Number of CPU cores
 
-    SAGEMAKER_ENDPOINT_CONFIG_INFERENCE: str = "twin"
-    SAGEMAKER_ENDPOINT_INFERENCE: str = "twin"
+    SAGEMAKER_ENDPOINT_CONFIG_INFERENCE: str = "LLMmimic7"
+    SAGEMAKER_ENDPOINT_INFERENCE: str = "LLMmimic7"
     TEMPERATURE_INFERENCE: float = 0.01
     TOP_P_INFERENCE: float = 0.9
     MAX_NEW_TOKENS_INFERENCE: int = 150

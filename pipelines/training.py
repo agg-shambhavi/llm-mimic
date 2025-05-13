@@ -3,7 +3,7 @@ from zenml import pipeline
 from steps import training as training_steps
 
 
-@pipeline
+@pipeline(enable_cache=False)
 def training(
     finetuning_type: str = "sft",
     num_train_epochs: int = 3,
